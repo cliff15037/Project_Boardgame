@@ -5,16 +5,17 @@ import random
 import math
 import copy
 
-
+LINENUM = 9 #LINENUM is the number of lines in the board
+GRIDWIDTH = 30 #GRIDWIDTH is the width of each grid
 def drawBoard():
-    for i in range(9):
-        mycanvas.create_line(30, (30 * i + 30), 270, (30 * i + 30))
-        mycanvas.create_line((30* i + 30), 30, (30 * i + 30), 270)
+    for i in range(LINENUM):
+        mycanvas.create_line(GRIDWIDTH, (GRIDWIDTH * i + GRIDWIDTH), LINENUM*GRIDWIDTH, (GRIDWIDTH * i + GRIDWIDTH))
+        mycanvas.create_line((GRIDWIDTH* i + GRIDWIDTH), GRIDWIDTH, (GRIDWIDTH * i + GRIDWIDTH), LINENUM*GRIDWIDTH,)
     
-    for i in range(9):
+    for i in range(LINENUM):
         UpperLetter = i+65
-        mycanvas.create_text(30 + 30*i, 15, text=chr(UpperLetter), fill="black", font=('Helvetica 12'))
-        mycanvas.create_text(15, 30 + 30*i, text=i+1, fill="black", font=('Helvetica 12'))
+        mycanvas.create_text(GRIDWIDTH + GRIDWIDTH*i, 15, text=chr(UpperLetter), fill="black", font=('Helvetica 12')) 
+        mycanvas.create_text(15, GRIDWIDTH + GRIDWIDTH*i, text=i+1, fill="black", font=('Helvetica 12'))
         pass
 
 def callback(event):
@@ -140,43 +141,43 @@ def count_pieces(pieces_can_be_eat):
 #投放障礙物
 def put_barrier():
     #畫布大小480*480
-    click_x = random.randint(30,270)
-    click_y = random.randint(30,270) 
+    click_x = random.randint(GRIDWIDTH,LINENUM*GRIDWIDTH)
+    click_y = random.randint(GRIDWIDTH,LINENUM*GRIDWIDTH) 
     print("click_x: ",click_x)
     print("click_y: ",click_y)
     #設定落子只能在線的交界處
-    if click_x%30 <= 30/2 :
-        pos_x = math.floor(click_x/30)*30
+    if click_x%GRIDWIDTH <= GRIDWIDTH/2 :
+        pos_x = math.floor(click_x/GRIDWIDTH)*GRIDWIDTH
     else:
-        pos_x = math.ceil(click_x/30)*30
-    if click_y%30 <= 30/2 :
-        pos_y = math.floor(click_y/30)*30
+        pos_x = math.ceil(click_x/GRIDWIDTH)*GRIDWIDTH
+    if click_y%GRIDWIDTH <= GRIDWIDTH/2 :
+        pos_y = math.floor(click_y/GRIDWIDTH)*GRIDWIDTH
     else:
-        pos_y = math.ceil(click_y/30)*30
+        pos_y = math.ceil(click_y/GRIDWIDTH)*GRIDWIDTH
         
     print("落子前: ",board_status)
     print("turn 1 : ",turn)
     # 0是空，1是黑，2是白
     # 一個位子只能下一次
-    i = int(pos_x/30)-1
-    j = int(pos_y/30)-1
+    i = int(pos_x/GRIDWIDTH)-1
+    j = int(pos_y/GRIDWIDTH)-1
 
     if board_status[i][j] == 0:
-        if pos_x==30:
-            piece_id = mycanvas.create_rectangle(pos_x , pos_y - 30,
-                pos_x + 30, pos_y + 30, fill = '#cb9d06')
-        elif pos_x==270:
-            piece_id = mycanvas.create_rectangle(pos_x-30 , pos_y - 30,
-                pos_x , pos_y + 30, fill = '#cb9d06')
-        elif pos_y==30:
-            piece_id = mycanvas.create_rectangle(pos_x-30 , pos_y,
-                pos_x , pos_y + 30, fill = '#cb9d06')
-        elif pos_y==270:
-            piece_id = mycanvas.create_rectangle(pos_x-30 , pos_y - 30,
+        if pos_x==GRIDWIDTH:
+            piece_id = mycanvas.create_rectangle(pos_x , pos_y - GRIDWIDTH,
+                pos_x + GRIDWIDTH, pos_y + GRIDWIDTH, fill = '#cb9d06')
+        elif pos_x==LINENUM*GRIDWIDTH:
+            piece_id = mycanvas.create_rectangle(pos_x-GRIDWIDTH , pos_y - GRIDWIDTH,
+                pos_x , pos_y + GRIDWIDTH, fill = '#cb9d06')
+        elif pos_y==GRIDWIDTH:
+            piece_id = mycanvas.create_rectangle(pos_x-GRIDWIDTH , pos_y,
+                pos_x , pos_y + GRIDWIDTH, fill = '#cb9d06')
+        elif pos_y==LINENUM*GRIDWIDTH:
+            piece_id = mycanvas.create_rectangle(pos_x-GRIDWIDTH , pos_y - GRIDWIDTH,
                 pos_x , pos_y, fill = '#cb9d06')
         else:
-            piece_id = mycanvas.create_rectangle(pos_x - 30, pos_y - 30,
-                pos_x + 30, pos_y + 30, fill = '#cb9d06')
+            piece_id = mycanvas.create_rectangle(pos_x - GRIDWIDTH, pos_y - GRIDWIDTH,
+                pos_x + GRIDWIDTH, pos_y + GRIDWIDTH, fill = '#cb9d06')
     board_status[i][j]=-1
 
 #落子
@@ -184,28 +185,28 @@ def putpiece():
     print("step: ", 6)
     global board_status, board_stack, board_pieceID_status, safe, eat, turn
     global num_eaten_by_black,num_eaten_by_white,num_eaten_by_blue
-    if(click_x>=30 and click_x<=270 and click_y>=30 and click_y<=270):
+    if(click_x>=GRIDWIDTH and click_x<=LINENUM*GRIDWIDTH and click_y>=GRIDWIDTH and click_y<=LINENUM*GRIDWIDTH):
         pass
         print("範圍正確")
         if not gameOver:#遊戲尚未結束，才可以落子
             print("落子者:", turn)
 
             #設定落子只能在線的交界處
-            if click_x%30 <= 30/2 :
-                pos_x = math.floor(click_x/30)*30
+            if click_x%GRIDWIDTH <= GRIDWIDTH/2 :
+                pos_x = math.floor(click_x/GRIDWIDTH)*GRIDWIDTH
             else:
-                pos_x = math.ceil(click_x/30)*30
-            if click_y%30 <= 30/2 :
-                pos_y = math.floor(click_y/30)*30
+                pos_x = math.ceil(click_x/GRIDWIDTH)*GRIDWIDTH
+            if click_y%GRIDWIDTH <= GRIDWIDTH/2 :
+                pos_y = math.floor(click_y/GRIDWIDTH)*GRIDWIDTH
             else:
-                pos_y = math.ceil(click_y/30)*30
+                pos_y = math.ceil(click_y/GRIDWIDTH)*GRIDWIDTH
             
             print("落子前: ",board_status)
             print("turn 1 : ",turn)
             # 0是空，1是黑，2是白
             # 一個位子只能下一次
-            i = int(pos_x/30)-1
-            j = int(pos_y/30)-1
+            i = int(pos_x/GRIDWIDTH)-1
+            j = int(pos_y/GRIDWIDTH)-1
             print("i, j : ", i, j)
             if turn=="black":
                 group=1
@@ -336,8 +337,8 @@ def withdraw():
                     j=e[1]
                     color = e[2]
                     print("color: ",color)
-                    pos_x = (i+1)*30
-                    pos_y = (j+1)*30
+                    pos_x = (i+1)*GRIDWIDTH
+                    pos_y = (j+1)*GRIDWIDTH
                     piece_id = mycanvas.create_oval(pos_x - radius, pos_y - radius,
                                    pos_x + radius, pos_y + radius,
                                    fill = dic[color])
@@ -522,8 +523,8 @@ if __name__ == '__main__':
     safe = False #在要吃子時，判斷是否能夠吃
 
     # 0是空，1是黑，2是白
-    board_status = [[0 for _ in range(9)] for _ in range(9)]
-    board_pieceID_status = [[-1 for _ in range(9)] for _ in range(9)]
+    board_status = [[0 for _ in range(LINENUM)] for _ in range(LINENUM)]
+    board_pieceID_status = [[-1 for _ in range(LINENUM)] for _ in range(LINENUM)]
     board_stack=[] # 裡面的元素是: (x, y, whose turn, id of the piece used to delete icon, 有沒有吃子)
     eat = []# stack用來記錄某次成功吃子時，被吃掉的子有哪些[[],[]...]
 
