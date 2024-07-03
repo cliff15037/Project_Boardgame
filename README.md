@@ -7,3 +7,5 @@ Looking back, some coding styles and designs may not seem ideal to me now, but i
 This is a simple Go game that allows three players to participate. 
 The rules are identical to those of traditional Go, with the primary difference being the addition of a third player (the Blue one). 
 Players of different colors are enemies to each other. They can cooperate to trap one another or try to win independently.
+
+The successful version 0.0 game is in multi_go_0.0.py
